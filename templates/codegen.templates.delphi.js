@@ -8,7 +8,7 @@ const DelphiTemplates = [
     // (Unit) Uses 
     [swgr.TAGS.DECLARATIONS.PUBLIC.USES,
 `  System.SysUtils, System.Classes, System.Generics.Collections,
-   Spring, Spring.Container, Spring.Collections, Zedmed.JSON.Serializers;
+   Spring, Spring.Container, Spring.Collections, JSON.Serializers;
 `   ],    
 
     [swgr.TAGS.NAMES.NAMESPACE, swgr.INFO.TITLE],
