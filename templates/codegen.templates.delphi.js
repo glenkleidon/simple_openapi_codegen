@@ -62,7 +62,7 @@ const DelphiTemplates = [
     [swgr.TAGS.DECLARATIONS.PRIVATE.REFTYPES, swgr.PROP.REFNAMES, `    F${swgr.ID}: ${swgr.asPath(swgr.PROP.REFTYPE)};\r\n`],
     [swgr.TAGS.DECLARATIONS.PRIVATE.LISTTYPES, swgr.PROP.LISTNAMES, `    F${swgr.ID}: ${swgr.asTag(swgr.TAGS.LISTCLASS, swgr.ID)};\r\n`],    
 
-    // Class 
+    // Class   
 
     [swgr.TAGS.DECLARATIONS.PUBLIC.CLASSES, swgr.CLASS.NAMES,
 `  T${swgr.ID} = class(${swgr.TAGS.BASECLASS})
