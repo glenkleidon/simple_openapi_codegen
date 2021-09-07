@@ -22,7 +22,7 @@ To use the tool:
   + Open in VS Code, select "codegendelphi.html"
   + Run LiveServer
  
-Start a web server in the folder and request "codegendelphi.html"
+Or, just start a web server in the folder and request "codegendelphi.html"
 
 At this stage, the page opens to the **PetStore** api with a basic delphi template.
 
