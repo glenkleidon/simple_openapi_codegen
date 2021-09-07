@@ -10,33 +10,30 @@ class CodeGenTemplate {
     }
 
     getTagValue(tag) {
-        if (!tag)
-        {
+        if (!tag) {
             return [];
         }
         let tagFields = tag.split('~');
-        let tagValues = {name:"",key:""};
-        if (tagFields.length===1) {
-            tagValues.name=tag      
+        let tagValues = { name: "", key: "" };
+        if (tagFields.length === 1) {
+            tagValues.name = tag
         }
-        else 
-        {
+        else {
             tagValues.name = `${tagFields[0]}>`;
-            tagValues.key  = tagFields[1].replace('>','');
+            tagValues.key = tagFields[1].replace('>', '');
         }
 
         let element = this.templates.find(
             v => (v[0] === tagValues.name)
         );
-        if (element)
-        {
-          if (tagValues.key) {
-               element[1] = element[1].replaceAll(swgr.ID,tagValues.key);
-          }
-          return element;
+        if (element) {
+            if (tagValues.key) {
+                element[1] = element[1].replaceAll(swgr.ID, tagValues.key);
+            }
+            return element;
         }
         else return [];
-        
+
     }
 
     isJSONPath(name) {
@@ -49,7 +46,7 @@ class CodeGenTemplate {
 
     setValueOrName(text) {
         let result = { name: "", value: "", template: "" };
-        let name = (this.isJSONPathTag(text)) ? text.substring(2,text.length-1) : text;
+        let name = (this.isJSONPathTag(text)) ? text.substring(2, text.length - 1) : text;
         if (this.isJSONPath(name)) {
             result.name = name;
         }
@@ -69,7 +66,7 @@ class CodeGenTemplate {
                         result.value = value;
                     }
                     // deal with single case only.                    
-                    
+
                     for (let i = 2; i < tagValue.length; i++) {
                         result.template = tagValue[i];
                     }
@@ -114,24 +111,31 @@ class CodeGenTemplate {
         let newText = "";
         let hasBlank = true;
 
-        let ifLine = this.isIfLine();
+        let ifLine = new IfLine();
 
         let lines = text.replaceAll("\r", "").split("\n");
-        let lineNo=0;
+        let lineNo = 0;
 
         lines.forEach(line => {
-            let isIf = this.isIfLine(line,lineNo++);
-            
 
-            if (line.trim().length === 0) {
-                if (!hasBlank) {
-                    newText = `${newText}\r\n`;
-                    hasBlank = true;
-                }
-            }
-            else {
-                newText = `${newText}\r\n${line}`;
+            let conditionalLine = ifLine.getContent(line, lineNo++);
+
+            if (conditionalLine) {
+                newText = `${newText}${conditionalLine}\r\n`;
                 hasBlank = false;
+            }
+            if (!ifLine.skip) {
+
+                if (line.trim().length === 0) {
+                    if (!hasBlank) {
+                        newText = `${newText}\r\n`;
+                        hasBlank = true;
+                    }
+                }
+                else {
+                    newText = `${newText}\r\n${line}`;
+                    hasBlank = false;
+                }
             }
 
         });
@@ -152,21 +156,18 @@ class CodeGenTemplate {
      * @param {string} template - The current template
      * @param {string} swagger - the (child) object being CodeGen'ed.
      */
-    setTemplateIds(template, swagger)
-    {
-        if (template.indexOf(swgr.PATH_PARENT)>=0 && (swagger) && (swagger.$parent))
-        {
+    setTemplateIds(template, swagger) {
+        if (template.indexOf(swgr.PATH_PARENT) >= 0 && (swagger) && (swagger.$parent)) {
             let newTemplate = template;
             let parent = swagger.$parent;
             let path = swgr.PARENT_ID;
-            let key="";
-            while (parent && newTemplate.index) 
-            {
+            let key = "";
+            while (parent && newTemplate.index) {
                 // maintain the current key unless it is changed.
                 key = (parent.$key) ? parent.$key : key;
                 // replace and parent key
-                newTemplate.replaceAll(path,key);
-                path=`${swgr.PATH_PARENT}${depth}`;
+                newTemplate.replaceAll(path, key);
+                path = `${swgr.PATH_PARENT}${depth}`;
                 parent = parent.$parent;
             }
             return newTemplate;
@@ -185,6 +186,7 @@ class CodeGenTemplate {
                     if (typeof element === 'object') {
                         element.$parent = swagger;
                         for (let key in element) {
+                            if (key.startsWith('$')) continue;
                             element.$key = key;
                             newValue = `${newValue}${(
                                 this.fillTemplate((template.replaceAll(swgr.ID, key)), element[key])

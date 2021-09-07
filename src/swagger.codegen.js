@@ -28,7 +28,7 @@ class IfLine {
                     .replace(']', '')
                     .trim());
 
-            this.count = (count) ? count : 1; // 1 blank line allowed by default
+            this.count = (isNaN(count)) ?  1 : count ; // 1 blank line allowed by default
             this.LastAllowedLine = lineNo+count;
             this.LastAllowedBlankLine = this.LastAllowedLine-1;
             this.skip = true;
@@ -38,7 +38,6 @@ class IfLine {
 
     getContent(line, lineNo) {
         this.skip = false;
-        let currentLineNo = this.lineNo;
         let lineIsBlank = (line || '').trim() === '';
         let alwaysReset = (lineNo > this.LastAllowedLine)
         let resetIfBlank = ((lineNo > this.LastAllowedBlankLine));
