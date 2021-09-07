@@ -106,9 +106,35 @@ class CodeGenTemplate {
         return result;
     }
 
+    isIfLine(line, lineNo) {
+        let ifLn = { 
+            lineNo: -1, 
+            blankCount: 0, 
+            blankFor: 0,
+            content: ""
+         };
+        
+        
+        if (line && line.trim().startsWith('#IF'))
+        {
+            ifLn.lineNo = lineNo;
+            
+            let firstSpace = line.indexOf(' ');
+            ifLn.content = line.substring(firstSpace).trim();
+
+            let count = (ln.length>3 && ln[3]==='[');
+            
+
+
+        }
+        return ifLn;
+
+    }
+
     cleanUp(text) {
         let newText = "";
         let hasBlank = true;
+        let IFLine = this.isIfLine();
 
         let lines = text.replaceAll("\r", "").split("\n");
         lines.forEach(line => {
