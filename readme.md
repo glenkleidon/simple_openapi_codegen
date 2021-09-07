@@ -15,4 +15,17 @@ The codegen runs from simple Javascript / JSON templates and uses _JSONPath_ exp
 dynamically construct any language code you want.
 
 
+## View the generated code 
+To view the current delphi code generator (we are really in early days yet - so we are definitely incomplete).
+
+To use the tool:
+  + Open in VS Code, select "codegendelphi.html"
+  + Run LiveServer
+ 
+Or, just start a web server in the folder and request "codegendelphi.html"
+
+At this stage, the page opens to the **PetStore** api with a basic delphi template.
+
+
+
 
