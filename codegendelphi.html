@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Code Gen</title>
+    <script src="lib/jsonpath.js"></script>
+    <script src="./src/swaggerService.js"></script>
+    <script src="./src/codegen.constants.js"></script>
+    <script src="./src/codegen.templates.js"></script>
+    <script src="./templates/codegen.templates.delphi.js"></script>
+    <script src="./src/swagger.codegen.js"></script>
+
+</head>
+
+<body>
+    <h1 id="apiTitle"></h1>
+    <h2 id="url"></h2>
+    <hr>
+    <h3>Template</h3>
+    <pre id="template"></pre>
+    <hr>
+    <h3>Code</h3>
+    <pre id="codebody"></pre>
+    <script>
+        //apiSwagger = new SwaggerService('./data/swagger.zedmed.api.json'); 
+        apiSwagger = new SwaggerService('./data/petstore.swagger.json'); 
+        apiSwagger.fetch(swagger => {
+           // cg.setElementText("template",DelphiTemplates);
+            cg.setElementText("apiTitle",`Code Generator for ${swagger.info.title}`);
+            cg.setElementText("url",`${apiSwagger.path()}`);
+            cg.setElementText("codebody", delphi.code(swagger))
+        });
+    </script>
+</body>
+
+</html>
