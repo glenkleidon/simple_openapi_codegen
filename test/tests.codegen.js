@@ -12,7 +12,7 @@ describe('codegen', () => {
         it('Should have expected values when #IF LINE is encountered', () => {
             expect(ifLine.lineNo).to.equal(22);
             expect(ifLine.content).to.equal('Yep');
-            expect(ifLine.count).to.equal(1);
+            expect(ifLine.count).to.equal(2);
             expect(ifLine.skip).to.be.true;
         });
 
@@ -48,7 +48,8 @@ describe('codegen', () => {
             
             it('Should have Testing and expected nothing ', () => {
                 expect(ifLine.content).to.equal('testing');
-                expect(ifLine.getContent('xxx', 8)).to.equal('');
+                expect(ifLine.getContent('', 8)).to.equal('');
+                expect(ifLine.getContent('xxx', 9)).to.equal('');
             });
     
             it('Should be reset after fail', () => {
@@ -69,7 +70,7 @@ describe('codegen', () => {
                 expect(ifLine.count).to.equal(4);
                 expect(ifLine.getContent('#IF line', 5)).to.equal('');
                 expect(ifLine.skip).to.be.true;
-                expect(ifLine.count).to.equal(1);
+                expect(ifLine.count).to.equal(2);
             });
             
     

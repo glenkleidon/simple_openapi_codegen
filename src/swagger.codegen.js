@@ -28,8 +28,8 @@ class IfLine {
                     .replace(']', '')
                     .trim());
 
-            this.count = (isNaN(count)) ?  1 : count ; // 1 blank line allowed by default
-            this.LastAllowedLine = lineNo+count;
+            this.count = (isNaN(count)) ?  2 : count ; // 1 blank line allowed by default
+            this.LastAllowedLine = lineNo+this.count;
             this.LastAllowedBlankLine = this.LastAllowedLine-1;
             this.skip = true;
         }
@@ -39,13 +39,13 @@ class IfLine {
     getContent(line, lineNo) {
         this.skip = false;
         let lineIsBlank = (line || '').trim() === '';
-        let alwaysReset = (lineNo > this.LastAllowedLine)
         let resetIfBlank = ((lineNo > this.LastAllowedBlankLine));
+        let returnContent = (! lineIsBlank && lineNo<=this.LastAllowedLine);
         
         let anotherIfLine = (!lineIsBlank && this.isIfLine(line, lineNo));
 
         if ((anotherIfLine) || (lineIsBlank && !resetIfBlank)) return "";
-        let content = (alwaysReset) ? "" :this.content;
+        let content = (returnContent) ? this.content: "";
         this.reset();
         return content;
     }
