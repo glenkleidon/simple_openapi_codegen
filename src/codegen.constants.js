@@ -1,5 +1,6 @@
 class CodeGenTemplateConstants {
     constructor() {
+        
         this.PATH_THIS = ".\\";
         this.PATH_PARENT = "..\\";
         this.ID = `{${this.PATH_THIS}id}`;

@@ -12,27 +12,44 @@
     <script src="./src/codegen.templates.js"></script>
     <script src="./templates/codegen.templates.delphi.js"></script>
     <script src="./src/swagger.codegen.js"></script>
-
+    <script src="./lib/codemirror/codemirror.js"></script>
+    <link rel="stylesheet" href="./lib/codemirror/codemirror.css">
+    <link rel="stylesheet" href="./lib/codemirror/theme/neat.css">
+    <script src="./lib/codemirror/mode/pascal/pascal.js"></script>
 </head>
 
 <body>
     <h1 id="apiTitle"></h1>
     <h2 id="url"></h2>
-    <hr>
-    <h3>Template</h3>
-    <pre id="template"></pre>
-    <hr>
-    <h3>Code</h3>
-    <pre id="codebody"></pre>
+    <div style="display:flex; flex-direction:column; height: 100vh; width: 100%;">
+        <hr>
+        <h3>Template</h3>
+        <pre id="template"></pre>
+        <hr>
+        <h3>Code</h3>
+        <pre style="flex:1;"><code name="codebody" id="codebody" class="language-delphi"></code></pre>
+    </div>
     <script>
-        apiSwagger = new SwaggerService('./data/petstore.swagger.json'); 
+        var sourceCode = "";
+        apiSwagger = new SwaggerService('./data/petstore.swagger.json');
         apiSwagger.fetch(swagger => {
-           // cg.setElementText("template",DelphiTemplates);
-            cg.setElementText("apiTitle",`Code Generator for ${swagger.info.title}`);
-            cg.setElementText("url",`${apiSwagger.path()}`);
-            cg.setElementText("codebody", delphi.code(swagger))
+            // cg.setElementText("template",DelphiTemplates);
+            cg.setElementText("apiTitle", `Code Generator for ${swagger.info.title}`);
+            cg.setElementText("url", `${apiSwagger.path()}`);
+
+            //generate the code
+            sourceCode = delphi.code(swagger);
+            //plug into the code block
+            var codegenMirror = CodeMirror(document.getElementById('codebody'), {
+                value: sourceCode,
+                mode: "pascal",
+                theme: "neat"
+            });
+            //cg.setElementText("codebody", sourceCode);
+
         });
     </script>
+    <script></script>
 </body>
 
 </html>
