@@ -1,3 +1,6 @@
 {
-  "dependencies": {}
+  "dependencies": {
+    "codemirror": "^5.62.3",
+    "jsonpath": "^1.1.1"
+  }
 }
